@@ -1,0 +1,4 @@
+IPEDS Data for Example College
+Graduation Rate (4-year): 60%
+Student-to-Faculty Ratio: 15:1
+Most Popular Majors: Business, Psychology, Biology

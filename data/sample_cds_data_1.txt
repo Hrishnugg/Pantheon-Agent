@@ -1,0 +1,7 @@
+College Name: Example University
+Common Data Set 2023-2024
+Section C: First-Time, First-Year (Freshman) Admission
+C1. Applications: 10,000
+C2. Admitted: 2,500
+C7. SAT Evidence-Based Reading and Writing: 25th percentile 600, 75th percentile 700
+C7. SAT Math: 25th percentile 620, 75th percentile 730

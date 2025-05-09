@@ -1,0 +1,4 @@
+google-adk
+python-dotenv
+google-cloud-aiplatform[adk,agent-engines]>=1.88.0
+llama-index>=0.12 
