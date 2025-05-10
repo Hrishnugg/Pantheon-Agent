@@ -9,7 +9,7 @@ from google.adk.tools.retrieval.vertex_ai_rag_retrieval import VertexAiRagRetrie
 from vertexai.preview import rag # Ensure this is the correct import for RagResource
 
 # Import prompts
-from .prompts import get_expanded_agent_instructions # Changed to new function name
+from .prompts import get_internal_coordinator_instructions, get_presenter_agent_instructions
 
 # Load environment variables from .env file
 load_dotenv()
@@ -86,11 +86,11 @@ coordinator_generate_content_config = genai_types.GenerateContentConfig(
     # )
 )
 
-project_insight_coordinator = Agent(
-    name="project_insight_coordinator",
+internal_coordinator_agent = Agent(
+    name="InternalCoordinatorAgent",
     model=os.getenv("ADK_MODEL_NAME", "gemini-2.5-flash-preview-04-17"),
     description="Coordinates multiple specialist agents to provide college admission chance analysis.",
-    instruction=get_expanded_agent_instructions(), # Changed to new function name
+    instruction=get_internal_coordinator_instructions(),
     tools=[
         AgentTool(agent=rag_agent),
         AgentTool(agent=search_agent),
@@ -100,8 +100,19 @@ project_insight_coordinator = Agent(
     generate_content_config=coordinator_generate_content_config 
 )
 
-# The main agent exposed by this module is now the coordinator
-root_agent = project_insight_coordinator
+# --- Presenter Agent Definition ---
+presenter_agent = Agent(
+    name="PresenterAgent",
+    model=os.getenv("ADK_MODEL_NAME", "gemini-2.5-flash-preview-04-17"),
+    instruction=get_presenter_agent_instructions(),
+    tools=[
+        AgentTool(agent=internal_coordinator_agent)
+    ]
+    # No special generate_content_config likely needed, default AFC limit is fine for one call.
+)
+
+# The main agent exposed by this module is now the presenter
+root_agent = presenter_agent
 
 if __name__ == "__main__":
     # This section is for local testing if you run 'python insight_agent/agent.py'
